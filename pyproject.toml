@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pdf-llm-tools"
+version = "0.0.1"
+dependencies = ["openai", "pdftotext"]
+requires-python = ">= 3.8"
+authors = [{ name="Jacob Fong", email="jacobcfong@gmail.com" }]
+description = "A family of LLM-enhanced PDF utilities"
+readme = "README.md"
+keywords = ["pdf", "llm"]
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/jcfk/pdf-llm-tools"
+Repository = "https://github.com/jcfk/pdf-llm-tools"
+
+[project.scripts]
+pdfllm-titler = "pdf_llm_tools.titler:main"
+pdfllm-toccer = "pdf_llm_tools.toccer:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pdf_llm_tools"]
