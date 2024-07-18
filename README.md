@@ -24,8 +24,8 @@ These utilities require all PDFs to have a correct OCR layer. Run something like
 ### pdfllm-titler
 
 ```
-$ pdfllm-titler a.pdf b.pdf c.pdf
-$ pdfllm-titler --last-page 8 d.pdf
+pdfllm-titler a.pdf b.pdf c.pdf
+pdfllm-titler --last-page 8 d.pdf
 ```
 
 See `--help` for full details.
