@@ -1,4 +1,4 @@
-import sys, subprocess, argparse, os
+import argparse, os
 from getpass import getpass
 
 # def err(message):

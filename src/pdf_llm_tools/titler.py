@@ -1,7 +1,8 @@
 import argparse, json, re, os
 from openai import OpenAI
-import pdftotext
+
 from .base import get_base_parser, initialize_base_opts
+from .utils import pdf_to_text
 
 def make_opts():
     parser = argparse.ArgumentParser(
@@ -43,11 +44,6 @@ def llm_parse_metadata(pdf_name, text):
     meta = json.loads(completion.choices[0].message.content)
     return None if meta["error"] else meta
 
-def pdf_fpath_to_text(fpath, fp, lp):
-    with open(fpath, "rb") as f:
-        pdf = pdftotext.PDF(f)
-        return "\n\n".join([pdf[i] for i in range(fp-1, lp)])
-
 def main():
     make_opts()
 
@@ -55,7 +51,7 @@ def main():
         # Extract metadata
         fdir = fpath[:fpath.rfind("/")+1]
         fname = fpath[fpath.rfind("/")+1:]
-        text = pdf_fpath_to_text(fpath, opts.first_page, opts.last_page)
+        text = pdf_to_text(fpath, opts.first_page, opts.last_page)
         meta = llm_parse_metadata(fname, text)
         if not meta:
             print(f"Unable to read metadata from {fpath}; skipping")
