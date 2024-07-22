@@ -1,13 +1,11 @@
 import argparse, json, re, os
-from openai import OpenAI
 
-from .base import get_base_parser, initialize_base_opts
-from .utils import pdf_to_text
+from . import base, utils, llm
 
 def make_opts():
     parser = argparse.ArgumentParser(
         description="Rename PDF documents according to their contents.",
-        parents=[get_base_parser()])
+        parents=[base.get_parser()])
     parser.add_argument("--first-page", "-f", type=int, default=1,
                         help="First page of pdf to read (default: 1)")
     parser.add_argument("--last-page", "-l", type=int, default=5,
@@ -18,7 +16,7 @@ def make_opts():
     opts = parser.parse_args()
 
     # Initialize common options
-    initialize_base_opts(opts)
+    base.initialize_opts(opts)
 
 def llm_parse_metadata(pdf_name, text):
     message = ("Detect the metadata for year, author surnames, and title from"
@@ -31,17 +29,7 @@ def llm_parse_metadata(pdf_name, text):
                f" Here is the filename: '{pdf_name}'."
                f" Here is the text: {text}.")
 
-    client = OpenAI(api_key=opts.openai_api_key)
-    completion = client.chat.completions.create(
-        model="gpt-3.5-turbo-1106",
-        response_format={"type": "json_object"},
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": message},
-        ]
-    )
-
-    meta = json.loads(completion.choices[0].message.content)
+    meta = json.loads(llm.helpful_assistant(message, opts.openai_api_key))
     return None if meta["error"] else meta
 
 def main():
@@ -51,7 +39,7 @@ def main():
         # Extract metadata
         fdir = fpath[:fpath.rfind("/")+1]
         fname = fpath[fpath.rfind("/")+1:]
-        text = pdf_to_text(fpath, opts.first_page, opts.last_page)
+        text = utils.pdf_to_text(fpath, opts.first_page, opts.last_page)
         meta = llm_parse_metadata(fname, text)
         if not meta:
             print(f"Unable to read metadata from {fpath}; skipping")
