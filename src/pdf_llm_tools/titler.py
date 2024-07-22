@@ -12,10 +12,9 @@ def make_opts():
                         help="Last page of pdf to read (default: 5)")
     parser.add_argument("fpath", type=str, nargs="+", help="PDF to rename")
 
+    # Initialize options
     global opts
-    opts = parser.parse_args()
-
-    # Initialize common options
+    opts = vars(parser.parse_args())
     base.initialize_opts(opts)
 
 def llm_parse_metadata(pdf_name, text):
