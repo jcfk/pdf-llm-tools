@@ -7,8 +7,10 @@
 - (todo) `pdfllm-toccer` adds a bookmark structure parsed from the detected
   contents table of the pdf.
 
-Currently OpenAI's `gpt-3.5-turbo-1106` is hardcoded as the LLM backend. The
-program requires an OpenAI API key via option, envvar, or manual input.
+We currently use poppler/[pdftotext](https://github.com/jalan/pdftotext) for
+layout-preserving text extraction and PyMuPDF to update outlines. OpenAI's
+`gpt-3.5-turbo-1106` is hardcoded as the LLM backend. The program requires an
+OpenAI API key via option, envvar, or manual input.
 
 ## Installation
 
