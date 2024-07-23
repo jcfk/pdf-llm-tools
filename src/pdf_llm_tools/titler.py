@@ -28,30 +28,42 @@ def llm_parse_metadata(pdf_name, text):
                f" Here is the filename: '{pdf_name}'."
                f" Here is the text: {text}.")
 
-    meta = json.loads(llm.helpful_assistant(message, opts.openai_api_key))
+    meta = json.loads(llm.helpful_assistant(message, opts["openai_api_key"]))
     return None if meta["error"] else meta
+
+def get_pdf_metadata(fpath):
+    fname = fpath[fpath.rfind("/")+1:]
+    text = utils.pdf_to_text(fpath, opts["first_page"], opts["last_page"])
+    return llm_parse_metadata(fname, text)
+
+def get_new_fpath(fpath, meta):
+    fdir = fpath[:fpath.rfind("/")+1]
+    year = meta["year"]
+    author = meta["authors"][0]
+    author = author[0].upper() + author[1:].lower()
+    title = meta["title"].lower().replace(" ", "-")
+    new_fname = re.sub(r"[^a-zA-Z0-9-.]", r"", f"{year}-{author}-{title}.pdf")
+    return f"{fdir}{new_fname}"
 
 def main():
     make_opts()
 
-    for fpath in opts.fpath:
-        # Extract metadata
-        fdir = fpath[:fpath.rfind("/")+1]
-        fname = fpath[fpath.rfind("/")+1:]
-        text = utils.pdf_to_text(fpath, opts.first_page, opts.last_page)
-        meta = llm_parse_metadata(fname, text)
-        if not meta:
-            print(f"Unable to read metadata from {fpath}; skipping")
+    for fpath in opts["fpath"]:
+        # Parse metadata
+        try:
+            meta = get_pdf_metadata(fpath)
+            if not meta:
+                print(f"Unable to read metadata from {fpath}; skipping")
+                continue
+        except utils.PagesIndexError:
+            fp = opts["first_page"]
+            lp = opts["last_page"]
+            print(f"Given --first-page {fp} and --last-page {lp} are outside of {fpath}; skipping")
             continue
 
         # Create new filename
-        year = meta["year"]
-        author = meta["authors"][0]
-        author = author[0].upper() + author[1:].lower()
-        title = meta["title"].lower().replace(" ", "-")
-        newfname = re.sub(r"[^a-zA-Z0-9-.]", r"", f"{year}-{author}-{title}.pdf")
-        newfpath = f"{fdir}{newfname}"
+        new_fpath = get_new_fpath(fpath, meta)
 
         # Rename
-        os.rename(fpath, newfpath)
-        print(f"Renamed {fpath} to {newfpath}")
+        os.rename(fpath, new_fpath)
+        print(f"Renamed {fpath} to {new_fpath}")

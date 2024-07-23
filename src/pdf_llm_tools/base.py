@@ -11,8 +11,8 @@ def get_parser():
 
 def initialize_opts(opts):
     # For api key, check option, then envvar, then ask.
-    if not opts.openai_api_key:
+    if not opts["openai_api_key"]:
         if "OPENAI_API_KEY" in os.environ:
-            opts.openai_api_key = os.environ["OPENAI_API_KEY"]
+            opts["openai_api_key"] = os.environ["OPENAI_API_KEY"]
         else:
-            opts.openai_api_key = getpass("OpenAI API key: ")
+            opts["openai_api_key"] = getpass("OpenAI API key: ")
