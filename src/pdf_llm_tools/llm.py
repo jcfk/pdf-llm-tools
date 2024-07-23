@@ -8,6 +8,5 @@ def helpful_assistant(message, api_key):
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": message},
-        ]
-    )
+        ])
     return completion.choices[0].message.content
