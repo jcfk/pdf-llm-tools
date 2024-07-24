@@ -1,6 +1,11 @@
+"""Package-wide LLM API utilities."""
+
 from openai import OpenAI
 
+
 def helpful_assistant(message, api_key):
+    """Call OpenAI chat completions API with message and return response.
+    With initial system message: 'You are a helpful assistant.'"""
     client = OpenAI(api_key=api_key)
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo-1106",
@@ -9,4 +14,5 @@ def helpful_assistant(message, api_key):
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": message},
         ])
+
     return completion.choices[0].message.content

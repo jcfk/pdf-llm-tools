@@ -1,12 +1,20 @@
-import os, unittest
-import pdf_llm_tools, pdf_llm_tools.utils, pdf_llm_tools.titler
+"""All tests for pdf-llm-tools."""
+
+import os
+import unittest
+import pdf_llm_tools
+import pdf_llm_tools.utils
+import pdf_llm_tools.titler
+
 
 class TestUtils(unittest.TestCase):
+    """Test package-wide utilities."""
     def setUp(self):
         self.cwd = os.getcwd()
         os.chdir(os.path.dirname(__file__))
 
     def test_pdf_to_text(self):
+        """Test pdf_to_text with different page ranges."""
         fpath = "pdfs/fruits.pdf"
 
         first_three_pages = pdf_llm_tools.utils.pdf_to_text(fpath, 1, 3)
@@ -24,12 +32,15 @@ class TestUtils(unittest.TestCase):
     def tearDown(self):
         os.chdir(self.cwd)
 
+
 class TestTitlerFpath(unittest.TestCase):
+    """Test titler fpath utilities."""
     def setUp(self):
         self.cwd = os.getcwd()
         os.chdir(os.path.dirname(__file__))
 
     def test_get_new_fpath(self):
+        """Test new fpath creation from metadata."""
         fpath = "pdfs/fruits.pdf"
         meta = {"year": 1973, "authors": ["Jekyll"], "title": "Real Good!!"}
         new_fpath = pdf_llm_tools.titler.get_new_fpath(fpath, meta)
@@ -38,7 +49,9 @@ class TestTitlerFpath(unittest.TestCase):
     def tearDown(self):
         os.chdir(self.cwd)
 
+
 class TestTitlerParse(unittest.TestCase):
+    """Test titler core metadata parsing."""
     def setUp(self):
         self.cwd = os.getcwd()
         os.chdir(os.path.dirname(__file__))
@@ -49,6 +62,7 @@ class TestTitlerParse(unittest.TestCase):
         pdf_llm_tools.titler.opts["openai_api_key"] = os.environ["OPENAI_API_KEY"]
 
     def test_parse_content_1(self):
+        """Test core metadata parsing, example 1."""
         fpath = "pdfs/mdeup.pdf"
         meta = pdf_llm_tools.titler.get_pdf_metadata(fpath)
         self.assertEqual(meta["year"], 2024)
@@ -56,6 +70,7 @@ class TestTitlerParse(unittest.TestCase):
         self.assertEqual(meta["title"], "MODULAR DEUTSCH ENTROPIC UNCERTAINTY PRINCIPLE")
 
     def test_parse_content_2(self):
+        """Test core metadata parsing, example 2."""
         fpath = "pdfs/fowler.pdf"
         meta = pdf_llm_tools.titler.get_pdf_metadata(fpath)
         self.assertEqual(meta["year"], 2005)
