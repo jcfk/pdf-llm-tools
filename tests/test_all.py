@@ -56,15 +56,20 @@ class TestTitlerParse(unittest.TestCase):
         self.cwd = os.getcwd()
         os.chdir(os.path.dirname(__file__))
 
-        pdf_llm_tools.titler.opts = {}
-        pdf_llm_tools.titler.opts["first_page"] = 1
-        pdf_llm_tools.titler.opts["last_page"] = 5
-        pdf_llm_tools.titler.opts["openai_api_key"] = os.environ["OPENAI_API_KEY"]
+        self.opts = {}
+        self.opts["first_page"] = 1
+        self.opts["last_page"] = 5
+        self.opts["openai_api_key"] = os.environ["OPENAI_API_KEY"]
+        pdf_llm_tools.titler.opts = self.opts
 
     def test_parse_content_1(self):
         """Test core metadata parsing, example 1."""
         fpath = "pdfs/mdeup.pdf"
-        meta = pdf_llm_tools.titler.get_pdf_metadata(fpath)
+        text = pdf_llm_tools.utils.pdf_to_text(
+            fpath, self.opts["first_page"], self.opts["last_page"])
+        pdf_name = fpath[fpath.rfind("/")+1:]
+        meta = pdf_llm_tools.titler.llm_parse_metadata(text, pdf_name)
+
         self.assertEqual(meta["year"], 2024)
         self.assertEqual(meta["authors"], ["Krishna"])
         self.assertEqual(meta["title"], "MODULAR DEUTSCH ENTROPIC UNCERTAINTY PRINCIPLE")
@@ -72,7 +77,11 @@ class TestTitlerParse(unittest.TestCase):
     def test_parse_content_2(self):
         """Test core metadata parsing, example 2."""
         fpath = "pdfs/fowler.pdf"
-        meta = pdf_llm_tools.titler.get_pdf_metadata(fpath)
+        text = pdf_llm_tools.utils.pdf_to_text(
+            fpath, self.opts["first_page"], self.opts["last_page"])
+        pdf_name = fpath[fpath.rfind("/")+1:]
+        meta = pdf_llm_tools.titler.llm_parse_metadata(text, pdf_name)
+
         self.assertEqual(meta["year"], 2005)
         self.assertEqual(meta["authors"], ["Fowler"])
         self.assertEqual(meta["title"], "The Mathematics Autodidact’s Aid")
