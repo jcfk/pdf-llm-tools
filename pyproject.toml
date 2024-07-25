@@ -1,6 +1,6 @@
 [project]
 name = "pdf-llm-tools"
-version = "0.0.2"
+version = "0.0.3"
 dependencies = ["openai", "pdftotext"]
 requires-python = ">= 3.8"
 authors = [{ name="Jacob Fong", email="jacobcfong@gmail.com" }]
