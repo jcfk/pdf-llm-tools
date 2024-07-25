@@ -39,8 +39,8 @@ def llm_parse_metadata(text, pdf_name):
                " book. I will also provide the filename."
                " Format your response as a json object, where 'year' is an int,"
                " 'authors' is a list of surname strings, 'title' is a string,"
-               " and 'error' is a boolean true if and only if you fail to"
-               " complete the task."
+               " and 'error' is a boolean that is true if you fail to complete"
+               " the task and false otherwise."
                f" Here is the filename: '{pdf_name}'."
                f" Here is the text: {text}.")
 
