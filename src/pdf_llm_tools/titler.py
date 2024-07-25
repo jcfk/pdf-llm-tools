@@ -28,7 +28,11 @@ def make_opts():
 
     parser = get_parser()
     opts = vars(parser.parse_args())
-    scripts.initialize_opts(opts)
+
+    # Check opts for correctness
+    if opts["last_page"] < opts["first_page"]:
+        scripts.err("--last-page cannot be less than --first-page")
+    scripts.check_opts(opts)
 
 
 def llm_parse_metadata(text, pdf_name):

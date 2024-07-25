@@ -1,11 +1,14 @@
 """Structural elements for all package scripts."""
 
+import sys
 import argparse
 import os
 from getpass import getpass
 
-# def err(message):
-#     sys.exit(message)
+
+def err(message):
+    """Print message to stderr and exit with code 1."""
+    sys.exit(f"err: {message}")
 
 
 def get_parser():
@@ -15,7 +18,7 @@ def get_parser():
     return parser
 
 
-def initialize_opts(opts):
+def check_opts(opts):
     """Do post-initialization checks of universal options."""
     # For api key, check option, then envvar, then ask.
     if not opts["openai_api_key"]:
