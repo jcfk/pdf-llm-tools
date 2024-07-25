@@ -32,3 +32,9 @@ pdfllm-titler --last-page 8 d.pdf
 
 See `--help` for full details.
 
+## Development
+
+This project is made with [Hatch](https://hatch.pypa.io/dev/).
+
+- Build: `hatch build`
+- Test: `hatch run test:test`
