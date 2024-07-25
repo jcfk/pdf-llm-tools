@@ -4,7 +4,7 @@ import argparse
 import json
 import re
 import os
-from . import base, utils, llm
+from . import scripts, utils, llm
 
 opts = None
 
@@ -13,7 +13,7 @@ def get_parser():
     """Make parser for titler script options."""
     parser = argparse.ArgumentParser(
         description="Rename PDF documents according to their contents.",
-        parents=[base.get_parser()])
+        parents=[scripts.get_parser()])
     parser.add_argument("--first-page", "-f", type=int, default=1,
                         help="First page of pdf to read (default: 1)")
     parser.add_argument("--last-page", "-l", type=int, default=5,
@@ -28,7 +28,7 @@ def make_opts():
 
     parser = get_parser()
     opts = vars(parser.parse_args())
-    base.initialize_opts(opts)
+    scripts.initialize_opts(opts)
 
 
 def llm_parse_metadata(text, pdf_name):
