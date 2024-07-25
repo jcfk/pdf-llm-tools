@@ -1,4 +1,4 @@
-# pdf-llm-tools
+# pdf-llm-tools [![PyPI](https://img.shields.io/pypi/v/pdf-llm-tools)](https://pypi.org/project/pdf-llm-tools/)
 
 `pdf-llm-tools` is a family of AI pdf utilities:
 
