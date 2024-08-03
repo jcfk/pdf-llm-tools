@@ -34,7 +34,7 @@ def make_opts():
     scripts.check_opts(opts)
 
 
-def llm_parse_metadata(text, pdf_name):
+def parse_metadata(text, pdf_name):
     """Parse metadata from the given pdf text via LLM.
 
     Return a metadata dictionary."""
@@ -78,7 +78,7 @@ def main():
         pdf_name = fpath[fpath.rfind("/")+1:]
 
         # Parse out metadata
-        meta = llm_parse_metadata(text, pdf_name)
+        meta = parse_metadata(text, pdf_name)
         if not meta:
             print(f"Unable to read metadata from {fpath}; skipping")
             continue

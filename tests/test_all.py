@@ -68,7 +68,7 @@ class TestTitlerParse(unittest.TestCase):
         text = pdf_llm_tools.utils.pdf_to_text(
             fpath, self.opts["first_page"], self.opts["last_page"])
         pdf_name = fpath[fpath.rfind("/")+1:]
-        meta = pdf_llm_tools.titler.llm_parse_metadata(text, pdf_name)
+        meta = pdf_llm_tools.titler.parse_metadata(text, pdf_name)
 
         self.assertEqual(meta["year"], 2024)
         self.assertEqual(meta["authors"], ["Krishna"])
@@ -80,7 +80,7 @@ class TestTitlerParse(unittest.TestCase):
         text = pdf_llm_tools.utils.pdf_to_text(
             fpath, self.opts["first_page"], self.opts["last_page"])
         pdf_name = fpath[fpath.rfind("/")+1:]
-        meta = pdf_llm_tools.titler.llm_parse_metadata(text, pdf_name)
+        meta = pdf_llm_tools.titler.parse_metadata(text, pdf_name)
 
         self.assertEqual(meta["year"], 2005)
         self.assertEqual(meta["authors"], ["Fowler"])
