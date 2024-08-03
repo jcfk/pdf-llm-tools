@@ -8,8 +8,11 @@ class PagesIndexError(Exception):
 
 
 def pdf_to_text(fpath, fp, lp, physical=False):
-    """Extract text from a pdf from first page to last page inclusive,
-    possibly preserving physical layout."""
+    """Extract text from the pdf at fpath.
+
+    First page and last page are 1-indexed and inclusive. Physical preserves the
+    physical layout of the text.
+    """
     with open(fpath, "rb") as f:
         pdf = pdftotext.PDF(f, physical=physical)
         if len(pdf) < fp:
