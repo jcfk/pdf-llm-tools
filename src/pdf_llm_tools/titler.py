@@ -1,7 +1,6 @@
 """The 'pdfllm-titler' pdf renaming utility."""
 
 import argparse
-import json
 import re
 import os
 from . import scripts, utils, llm
@@ -36,8 +35,9 @@ def make_opts():
 
 
 def llm_parse_metadata(text, pdf_name):
-    """Parse metadata from the given pdf text with a helpful assistant LLM.
-    Return the response as a json object."""
+    """Parse metadata from the given pdf text via LLM.
+
+    Return a metadata dictionary."""
     message = ("Detect the metadata for year, author surnames, and title from"
                " the following text of the first pages of an academic paper or"
                " book. I will also provide the filename."
@@ -48,7 +48,7 @@ def llm_parse_metadata(text, pdf_name):
                f" Here is the filename: '{pdf_name}'."
                f" Here is the text: {text}.")
 
-    meta = json.loads(llm.helpful_assistant(message, opts["openai_api_key"]))
+    meta = llm.helpful_assistant_json(message, opts["openai_api_key"])
     return None if meta["error"] else meta
 
 
