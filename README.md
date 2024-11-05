@@ -15,7 +15,7 @@ API key via option, envvar, or manual input.
 ## Installation
 
 ```
-pip install pdf-llm-tools
+pipx install pdf-llm-tools
 ```
 
 ## Usage
