@@ -1,6 +1,5 @@
 [project]
 name = "pdf-llm-tools"
-version = "0.0.3"
 dependencies = ["openai", "pdftotext"]
 requires-python = ">= 3.8"
 authors = [{ name="Jacob Fong", email="jacobcfong@gmail.com" }]
@@ -12,26 +11,41 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent"
 ]
+dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/jcfk/pdf-llm-tools"
 Repository = "https://github.com/jcfk/pdf-llm-tools"
 
 [project.scripts]
-pdfllm-titler = "pdf_llm_tools.titler:main"
-pdfllm-toccer = "pdf_llm_tools.toccer:main"
+pdfllm = "pdf_llm_tools.main:main"
 
 # Hatch
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
+
+## hatch-vcs git tag-based versioning
+# https://github.com/ofek/hatch-vcs
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "_version.py"
+
+## Hatch build targets
+
+[tool.hatch.build.targets.sdist]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pdf_llm_tools"]
 
-# Hatch/Environments
+## Hatch environments
 
 [tool.hatch.envs.test]
+dependencies = ["pytest"]
+
 [tool.hatch.envs.test.scripts]
-test = "python -m unittest"
+test_all = "python -m pytest {args}"

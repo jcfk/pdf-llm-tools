@@ -1,2 +1,4 @@
 __pycache__/
 dist/
+_version.py
+.pytest_cache
